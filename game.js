@@ -10,6 +10,7 @@ const btnLeft = $("#left");
 let canvasSize;
 let elementSize;
 let level = 0;
+let lives = 3;
 
 
 const playerPosition = {
@@ -78,11 +79,8 @@ function startGame() {
           console.log({playerPosition})
         }
       } else if (col == 'I') {
-        if(!giftPosition.x && !giftPosition.y ) {
           giftPosition.x = posX;
-          giftPosition.y = posY;
-          console.log({giftPosition})
-        }
+          giftPosition.y = posY; 
       } else if (col == 'X') {
         enemiesPositions.push({x: posX, y: posY})
       }
@@ -101,6 +99,18 @@ function startGame() {
 function levelWin() {
   console.log('subiste de nivel')
   level++;
+  startGame();
+}
+
+function levelFail() {
+  lives--;
+  if (lives <= 0) {
+    level = 0;
+    lives = 3;
+  }
+
+  playerPosition.x = undefined;
+  playerPosition.y = undefined;
   startGame();
 }
 
@@ -123,7 +133,8 @@ function movePlayer () {
   })
 
   if (enemyCollision) {
-    console.log('collision')
+    levelFail();
+
   }
 
   game.fillText(emojis['PLAYER'], playerPosition.x, playerPosition.y);

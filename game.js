@@ -5,6 +5,7 @@ const btnUp = $("#up");
 const btnDown = $("#down");
 const btnRight = $("#right");
 const btnLeft = $("#left");
+const spanLives = $("#lives");
 
 
 let canvasSize;
@@ -65,6 +66,8 @@ function startGame() {
   enemiesPositions.length = 0;
   game.clearRect(0,0, canvasSize, canvasSize);
 
+  showLives();
+
 
   mapRowCols.forEach((row, rowI) => {
     row.forEach((col, colI) => {
@@ -104,6 +107,8 @@ function levelWin() {
 
 function levelFail() {
   lives--;
+
+
   if (lives <= 0) {
     level = 0;
     lives = 3;
@@ -116,6 +121,12 @@ function levelFail() {
 
 function gameWin() {
   console.log('terminaste el juego ')
+}
+
+function showLives() {
+  spanLives.innerHTML = emojis["HEART"].repeat(lives)
+  // const heartsArray = Array(lives).fill(emojis['HEART']);
+  // spanLives.innerHTML = heartsArray.join('');  
 }
 
 function movePlayer () {

@@ -16,6 +16,13 @@ const playerPosition = {
   y: undefined
 }
 
+const giftPosition = {
+  x: undefined,
+  y: undefined
+}
+
+const enemiesPositions = [];
+
 window.addEventListener('load', setCanvasSize);
 window.addEventListener('resize', setCanvasSize);
 
@@ -47,19 +54,30 @@ function startGame() {
   const mapRows = map.trim().split('\n');
   const mapRowCols = mapRows.map(row => row.trim().split(''));
 
+  enemiesPositions.length = 0;
   game.clearRect(0,0, canvasSize, canvasSize);
+
+
   mapRowCols.forEach((row, rowI) => {
     row.forEach((col, colI) => {
       const emoji = emojis[col]
       const posX = (colI + 1) * elementSize;
       const posY = (rowI + 1) * elementSize;
 
-      if(col == 'O' ) {
+      if(col == 'O') {
         if(!playerPosition.x && !playerPosition.y ) {
           playerPosition.x = posX;
           playerPosition.y = posY;
           console.log({playerPosition})
         }
+      } else if (col == 'I') {
+        if(!giftPosition.x && !giftPosition.y ) {
+          giftPosition.x = posX;
+          giftPosition.y = posY;
+          console.log({giftPosition})
+        }
+      } else if (col == 'X') {
+        enemiesPositions.push({x: posX, y: posY})
       }
 
       game.fillText(emoji, posX, posY);
@@ -75,7 +93,25 @@ function startGame() {
 
 
 function movePlayer () {
+  const gitfCollisionX = playerPosition.x.toFixed(3) == giftPosition.x.toFixed(3);
+  const gitfCollisionY = playerPosition.y.toFixed(3) == giftPosition.y.toFixed(3); 
+  const gitfCollision = gitfCollisionX && gitfCollisionY;
+  if (gitfCollision) {
+    console.log('congrats')
+  }
+
+  const enemyCollision = enemiesPositions.some(enemy => {
+    const enemyCollisionX = enemy.x.toFixed(3) == playerPosition.x.toFixed(3);
+    const enemyCollisionY = enemy.y.toFixed(3) == playerPosition.y.toFixed(3);
+    return enemyCollisionX && enemyCollisionY;
+  })
+
+  if (enemyCollision) {
+    console.log('collision')
+  }
+
   game.fillText(emojis['PLAYER'], playerPosition.x, playerPosition.y);
+
 }
 
 window.addEventListener('keydown', moveByKeys);

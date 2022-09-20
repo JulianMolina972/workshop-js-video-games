@@ -9,6 +9,7 @@ const btnLeft = $("#left");
 
 let canvasSize;
 let elementSize;
+let level = 0;
 
 
 const playerPosition = {
@@ -50,7 +51,13 @@ function startGame() {
   game.font = elementSize + 'px Verdana';
   game.textAlign = 'end';
 
-  const map = maps[0];
+  const map = maps[level];
+
+
+  if(!map){
+    gameWin();
+    return;
+  }
   const mapRows = map.trim().split('\n');
   const mapRowCols = mapRows.map(row => row.trim().split(''));
 
@@ -91,13 +98,22 @@ function startGame() {
 
 }
 
+function levelWin() {
+  console.log('subiste de nivel')
+  level++;
+  startGame();
+}
+
+function gameWin() {
+  console.log('terminaste el juego ')
+}
 
 function movePlayer () {
   const gitfCollisionX = playerPosition.x.toFixed(3) == giftPosition.x.toFixed(3);
   const gitfCollisionY = playerPosition.y.toFixed(3) == giftPosition.y.toFixed(3); 
   const gitfCollision = gitfCollisionX && gitfCollisionY;
   if (gitfCollision) {
-    console.log('congrats')
+    levelWin();
   }
 
   const enemyCollision = enemiesPositions.some(enemy => {

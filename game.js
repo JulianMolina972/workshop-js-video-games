@@ -1,6 +1,8 @@
 const $ = (selector) => document.querySelector(selector);
+
 const canvas = $("#game");
 const game = canvas.getContext("2d");
+
 const btnUp = $("#up");
 const btnDown = $("#down");
 const btnRight = $("#right");
@@ -11,16 +13,13 @@ const spanRecord = $("#record");
 const pResult = $("#result");
 
 
-let canvasSize;
-let elementSize;
-let level = 0;
-let lives = 3;
-
-
 let timeStart;
 let timePlayer;
+let canvasSize;
+let elementSize;
 let timeInterval;
-
+let level = 0;
+let lives = 3;
 
 
 const playerPosition = {
@@ -38,20 +37,24 @@ const enemiesPositions = [];
 window.addEventListener('load', setCanvasSize);
 window.addEventListener('resize', setCanvasSize);
 
-
+function fixNumber(n) {
+  return Number(n.toFixed(0));
+}
 
 function setCanvasSize() {
-
   if(window.innerHeight > window.innerWidth) {
-    canvasSize = window.innerWidth * 0.7;
+    canvasSize = fixNumber((window.innerWidth * 0.7));
   } else {
-    canvasSize = window.innerHeight * 0.7;
+    canvasSize = fixNumber((window.innerHeight * 0.7));
+    console.log(canvasSize);
   }
 
-  canvas.setAttribute('width', canvasSize);
-  canvas.setAttribute('height', canvasSize);
+  canvasSize = fixNumber(canvasSize);
 
-  elementSize = (canvasSize / 10);
+  canvas.setAttribute('width', canvasSize);
+  canvas.setAttribute('height', canvasSize + 10);
+
+  elementSize = fixNumber((canvasSize / 10));
 
   playerPosition.x = undefined;
   playerPosition.y = undefined;
@@ -61,12 +64,10 @@ function setCanvasSize() {
 
 
 function startGame() {
-
-  game.font = elementSize + 'px Verdana';
+  game.font = elementSize - 7  + 'px Verdana';
   game.textAlign = 'end';
 
   const map = maps[level];
-
 
   if(!map){
     gameWin();
@@ -86,18 +87,18 @@ function startGame() {
 
   showLives();
 
-
   mapRowCols.forEach((row, rowI) => {
     row.forEach((col, colI) => {
       const emoji = emojis[col]
-      const posX = (colI + 1) * elementSize;
-      const posY = (rowI + 1) * elementSize;
+      const posX = fixNumber((colI + 1) * elementSize);
+      const posY = fixNumber((rowI + 1) * elementSize);
+      
 
       if(col == 'O') {
-        if(!playerPosition.x && !playerPosition.y ) {
+        if(!playerPosition.x && !playerPosition.y) {
           playerPosition.x = posX;
           playerPosition.y = posY;
-          console.log({playerPosition})
+          console.log(playerPosition.x, playerPosition.y);
         }
       } else if (col == 'I') {
           giftPosition.x = posX;
@@ -105,16 +106,10 @@ function startGame() {
       } else if (col == 'X') {
         enemiesPositions.push({x: posX, y: posY})
       }
-
       game.fillText(emoji, posX, posY);
-
-
     })
   });
-
   movePlayer();
-
-
 }
 
 function levelWin() {
@@ -125,7 +120,6 @@ function levelWin() {
 
 function levelFail() {
   lives--;
-
 
   if (lives <= 0) {
     level = 0;
@@ -141,7 +135,6 @@ function levelFail() {
 function gameWin() {
   console.log('terminaste el juego ')
   clearInterval(timeInterval);
-
 
   const recordTime = localStorage.getItem('record_time');
   const playerTime = Date.now() - timeStart;
@@ -160,8 +153,6 @@ function gameWin() {
 
 function showLives() {
   spanLives.innerHTML = emojis["HEART"].repeat(lives)
-  // const heartsArray = Array(lives).fill(emojis['HEART']);
-  // spanLives.innerHTML = heartsArray.join('');  
 }
 
 function showTime() {
@@ -181,26 +172,24 @@ function showRecord() {
 }
 
 function movePlayer () {
-  const gitfCollisionX = playerPosition.x.toFixed(3) == giftPosition.x.toFixed(3);
-  const gitfCollisionY = playerPosition.y.toFixed(3) == giftPosition.y.toFixed(3); 
+  const gitfCollisionX = fixNumber(playerPosition.x) == fixNumber(giftPosition.x);
+  const gitfCollisionY = fixNumber(playerPosition.y) == fixNumber(giftPosition.y); 
+  console.log( playerPosition.x, giftPosition.x, playerPosition.y, giftPosition.y);
   const gitfCollision = gitfCollisionX && gitfCollisionY;
   if (gitfCollision) {
     levelWin();
   }
 
   const enemyCollision = enemiesPositions.some(enemy => {
-    const enemyCollisionX = enemy.x.toFixed(3) == playerPosition.x.toFixed(3);
-    const enemyCollisionY = enemy.y.toFixed(3) == playerPosition.y.toFixed(3);
+    const enemyCollisionX = fixNumber(enemy.x) == fixNumber(playerPosition.x);
+    const enemyCollisionY = fixNumber(enemy.y) == fixNumber(playerPosition.y);
     return enemyCollisionX && enemyCollisionY;
   })
 
   if (enemyCollision) {
     levelFail();
-
   }
-
   game.fillText(emojis['PLAYER'], playerPosition.x, playerPosition.y);
-
 }
 
 window.addEventListener('keydown', moveByKeys);
@@ -225,7 +214,6 @@ function moveByKeys(e) {
       moveLeft();
       break;
   }
-
 }
 
 function moveUp() {
@@ -238,7 +226,6 @@ function moveUp() {
 }
 
 function moveDown() {
-  
   if ((playerPosition.y + elementSize) > canvasSize ){
     // return;
   } else{
@@ -248,7 +235,6 @@ function moveDown() {
 }
 
 function moveRight() {
-  
   if ((playerPosition.x + elementSize) > canvasSize ){
     // return;
   } else{
@@ -258,7 +244,6 @@ function moveRight() {
 }
 
 function moveLeft() {
-  
   if ((playerPosition.x - elementSize) < elementSize ){
     // return;
   } else{

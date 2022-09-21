@@ -7,6 +7,8 @@ const btnRight = $("#right");
 const btnLeft = $("#left");
 const spanLives = $("#lives");
 const spanTime = $("#time");
+const spanRecord = $("#record");
+const pResult = $("#result");
 
 
 let canvasSize;
@@ -41,15 +43,18 @@ window.addEventListener('resize', setCanvasSize);
 function setCanvasSize() {
 
   if(window.innerHeight > window.innerWidth) {
-    canvasSize = window.innerWidth * 0.8;
+    canvasSize = window.innerWidth * 0.7;
   } else {
-    canvasSize = window.innerHeight * 0.8;
+    canvasSize = window.innerHeight * 0.7;
   }
 
   canvas.setAttribute('width', canvasSize);
   canvas.setAttribute('height', canvasSize);
 
-  elementSize = (canvasSize / 10)  ;
+  elementSize = (canvasSize / 10);
+
+  playerPosition.x = undefined;
+  playerPosition.y = undefined;
 
   startGame();
 }
@@ -71,6 +76,7 @@ function startGame() {
   if (!timeStart){
     timeStart = new Date();
     timeInterval = setInterval(showTime, 100);
+    showRecord();
   }
   const mapRows = map.trim().split('\n');
   const mapRowCols = mapRows.map(row => row.trim().split(''));
@@ -135,6 +141,21 @@ function levelFail() {
 function gameWin() {
   console.log('terminaste el juego ')
   clearInterval(timeInterval);
+
+
+  const recordTime = localStorage.getItem('record_time');
+  const playerTime = Date.now() - timeStart;
+  if (recordTime) {
+    if (playerTime < recordTime) {
+      localStorage.setItem('record_time', playerTime);
+      pResult.innerHTML = 'new record'
+    } else {
+      pResult.innerHTML = 'no hay record'
+    }
+  } else {
+    localStorage.setItem('record_time', playerTime);
+    pResult.innerHTML = 'new record first time'
+  }
 }
 
 function showLives() {
@@ -152,6 +173,11 @@ function showTime() {
   // const seconds = date.getSeconds();
   // const time = `${hours}:${minutes}:${seconds}`;
   // spanTime.innerHTML = time;
+}
+
+
+function showRecord() {
+  spanRecord.innerHTML = localStorage.getItem('record_time') || '0';
 }
 
 function movePlayer () {

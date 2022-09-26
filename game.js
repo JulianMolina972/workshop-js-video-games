@@ -47,9 +47,9 @@ function fixNumber(n) {
 
 function setCanvasSize() {
   if(fixNumber(window.innerHeight) > fixNumber(window.innerWidth)) {
-    canvasSize = fixNumber((window.innerWidth * 0.7));
+    canvasSize = fixNumber((window.innerWidth * 0.79));
   } else {
-    canvasSize = fixNumber((window.innerHeight * 0.7));
+    canvasSize = fixNumber((window.innerHeight * 0.79));
     console.log(canvasSize);
   }
 

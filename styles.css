@@ -8,11 +8,13 @@ body {
 
 .game-container {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
   height: 100vh;
   width: 100vw;
+  row-gap: 10px;
 }
 
 canvas {
@@ -28,6 +30,7 @@ canvas {
   flex-wrap: wrap;
   margin: 0 auto;
   width: 100%;
+
 }
 
 button {
@@ -47,13 +50,14 @@ button:not(:last-child) {
 
 .messages {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: row;
+  /* flex-wrap: wrap; */
   margin: 0 auto;
   width: 80%;
   max-width: 460px;
 }
 
-p {
+.messages p {
   display: block;
   margin: 0;
   width: 100%;

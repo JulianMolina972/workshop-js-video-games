@@ -32,7 +32,7 @@ const giftPosition = {
   y: undefined
 }
 
-const enemiesPositions = [];
+let enemiesPositions = [];
 
 window.addEventListener('load', setCanvasSize);
 window.addEventListener('resize', setCanvasSize);
@@ -42,7 +42,7 @@ function fixNumber(n) {
 }
 
 function setCanvasSize() {
-  if(window.innerHeight > window.innerWidth) {
+  if(fixNumber(window.innerHeight) > fixNumber(window.innerWidth)) {
     canvasSize = fixNumber((window.innerWidth * 0.7));
   } else {
     canvasSize = fixNumber((window.innerHeight * 0.7));
@@ -51,7 +51,7 @@ function setCanvasSize() {
 
   canvasSize = fixNumber(canvasSize);
 
-  canvas.setAttribute('width', canvasSize);
+  canvas.setAttribute('width', canvasSize + 5);
   canvas.setAttribute('height', canvasSize + 10);
 
   elementSize = fixNumber((canvasSize / 10));
@@ -82,7 +82,7 @@ function startGame() {
   const mapRows = map.trim().split('\n');
   const mapRowCols = mapRows.map(row => row.trim().split(''));
 
-  enemiesPositions.length = 0;
+  enemiesPositions = [];
   game.clearRect(0,0, canvasSize, canvasSize);
 
   showLives();
@@ -219,26 +219,32 @@ function moveByKeys(e) {
 function moveUp() {
   if ((playerPosition.y - elementSize) < elementSize ){
     // return;
+    console.log(playerPosition, elementSize);
   } else{
     playerPosition.y -= elementSize;
+    console.log(playerPosition, elementSize);
     startGame();
   }
 }
 
 function moveDown() {
-  if ((playerPosition.y + elementSize) > canvasSize ){
+  if ((playerPosition.y + elementSize) > canvasSize + 5 ){
     // return;
+    console.log(playerPosition, elementSize, canvasSize);
   } else{
     playerPosition.y += elementSize;
+    console.log(playerPosition, elementSize);
     startGame();
   }
 }
 
 function moveRight() {
-  if ((playerPosition.x + elementSize) > canvasSize ){
+  if ((playerPosition.x + elementSize) > canvasSize + 5 ){
     // return;
+    console.log(playerPosition, elementSize, canvasSize);
   } else{
     playerPosition.x += elementSize;
+    console.log(playerPosition, elementSize);
     startGame();
   }
 }
@@ -246,8 +252,10 @@ function moveRight() {
 function moveLeft() {
   if ((playerPosition.x - elementSize) < elementSize ){
     // return;
+    console.log(playerPosition, elementSize);
   } else{
     playerPosition.x -= elementSize;
+    console.log(playerPosition, elementSize);
     startGame();
   }
 }

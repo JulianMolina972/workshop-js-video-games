@@ -97,7 +97,6 @@ function startGame() {
       const posX = fixNumber((colI + 1.1) * elementSize);
       const posY = fixNumber((rowI + 1) * elementSize);
       
-
       if(col == 'O') {
         if(!playerPosition.x && !playerPosition.y) {
           playerPosition.x = posX;
@@ -110,6 +109,7 @@ function startGame() {
       } else if (col == 'X') {
         enemiesPositions.push({x: posX, y: posY})
       }
+      // console.log(emoji, posX, posY);
       game.fillText(emoji, posX, posY);
     })
   });
@@ -189,17 +189,30 @@ function movePlayer () {
   if (gitfCollision) {
     levelWin();
   }
-
+  
+  
   const enemyCollision = enemiesPositions.some(enemy => {
+    // console.log(enemy.x, enemy.y, playerPosition.x, playerPosition.y);
     const enemyCollisionX = fixNumber(enemy.x) == fixNumber(playerPosition.x);
     const enemyCollisionY = fixNumber(enemy.y) == fixNumber(playerPosition.y);
+    // console.log(fixNumber(playerPosition.x))
+    if (enemyCollisionX && enemyCollisionY) {
+      // game.fillText(emojis['BOMB_COLLISION'], playerPosition.x, playerPosition.y);
+      // console.log('exploto')
+      // console.log('exploto', playerPosition.x, playerPosition.y)
+    }
+    // console.log(enemy.x, enemy.y);
     return enemyCollisionX && enemyCollisionY;
   })
+  
+  
+  
+  game.fillText(emojis['PLAYER'], playerPosition.x, playerPosition.y);
 
   if (enemyCollision) {
-    levelFail();
+    game.fillText(emojis['BOMB_COLLISION'], playerPosition.x, playerPosition.y);
+    setTimeout(() => levelFail(), 300);
   }
-  game.fillText(emojis['PLAYER'], playerPosition.x, playerPosition.y);
 }
 
 window.addEventListener('keydown', moveByKeys);

@@ -11,6 +11,7 @@ const spanLives = $("#lives");
 const spanTime = $("#time");
 const spanRecord = $("#record");
 const pResult = $("#result");
+const reset = $("#reset");
 
 
 let timeStart;
@@ -37,6 +38,9 @@ let enemiesPositions = [];
 window.addEventListener('load', setCanvasSize);
 window.addEventListener('resize', setCanvasSize);
 
+// reset.disabled = true;
+reset.style.display = 'none';
+
 function fixNumber(n) {
   return Number(n.toFixed(0));
 }
@@ -51,8 +55,8 @@ function setCanvasSize() {
 
   canvasSize = fixNumber(canvasSize);
 
-  canvas.setAttribute('width', canvasSize + 5);
-  canvas.setAttribute('height', canvasSize + 10);
+  canvas.setAttribute('width', canvasSize );
+  canvas.setAttribute('height', canvasSize + 7);
 
   elementSize = fixNumber((canvasSize / 10));
 
@@ -64,7 +68,7 @@ function setCanvasSize() {
 
 
 function startGame() {
-  game.font = elementSize - 7  + 'px Verdana';
+  game.font = elementSize - 7  + 'px Arial';
   game.textAlign = 'end';
 
   const map = maps[level];
@@ -90,7 +94,7 @@ function startGame() {
   mapRowCols.forEach((row, rowI) => {
     row.forEach((col, colI) => {
       const emoji = emojis[col]
-      const posX = fixNumber((colI + 1) * elementSize);
+      const posX = fixNumber((colI + 1.1) * elementSize);
       const posY = fixNumber((rowI + 1) * elementSize);
       
 
@@ -132,6 +136,10 @@ function levelFail() {
   startGame();
 }
 
+function reloadGame() {
+  location.reload();
+}
+
 function gameWin() {
   console.log('terminaste el juego ')
   clearInterval(timeInterval);
@@ -149,6 +157,8 @@ function gameWin() {
     localStorage.setItem('record_time', playerTime);
     pResult.innerHTML = 'new record first time'
   }
+  reset.style.display = 'flex';
+  reset.addEventListener('click', reloadGame);
 }
 
 function showLives() {

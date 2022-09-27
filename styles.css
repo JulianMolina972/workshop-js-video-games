@@ -20,7 +20,6 @@ body {
 canvas {
   border-radius: 8px;
   background-color: #feff9d;
-  /* padding: 8px; */
 }
 
 .buttons-container {
@@ -29,13 +28,11 @@ canvas {
   flex-wrap: wrap;
   margin: 0 auto;
   width: 100%;
-
 }
 
 button {
-  background-color: #2125f7d5;
+  background-color: #30cfffc7;
   border-radius: 8px;
-  border-color: #feff9d;
   font-family: inherit;
   margin: 0;
   padding: 5px 20px;
@@ -52,7 +49,6 @@ button:not(:last-child) {
 .messages {
   display: flex;
   flex-direction: row;
-  /* flex-wrap: wrap; */
   margin: 0 auto;
   width: 80%;
   max-width: 460px;
@@ -120,7 +116,6 @@ button:not(:last-child) {
   text-align: center;
   color: #fff;
   background-color: #2125f7d5;
-  /* padding: 1em 3em; */
   padding: 10px 10px;
   border: 1px solid ;
   border-radius: 6px;

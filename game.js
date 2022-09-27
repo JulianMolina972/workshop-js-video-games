@@ -11,7 +11,8 @@ const spanLives = $("#lives");
 const spanTime = $("#time");
 const spanRecord = $("#record");
 const pResult = $("#result");
-const reset = $("#reset");
+const modal = $('.modal');
+const reset = $('#reset');
 
 
 let timeStart;
@@ -38,8 +39,9 @@ let enemiesPositions = [];
 window.addEventListener('load', setCanvasSize);
 window.addEventListener('resize', setCanvasSize);
 
-// reset.disabled = true;
-reset.style.display = 'none';
+reset.addEventListener('click', reloadGame);
+
+
 
 function fixNumber(n) {
   return Number(n.toFixed(0));
@@ -137,10 +139,16 @@ function levelFail() {
 }
 
 function reloadGame() {
+  // e.preventDefault();
+  modal.classList.remove('modal--show');
   location.reload();
 }
 
 function gameWin() {
+
+  // e.preventDefault();
+  modal.classList.add('modal--show');
+
   console.log('terminaste el juego ')
   clearInterval(timeInterval);
 
@@ -149,16 +157,15 @@ function gameWin() {
   if (recordTime) {
     if (playerTime < recordTime) {
       localStorage.setItem('record_time', playerTime);
-      pResult.innerHTML = 'new record'
+      pResult.innerHTML = 'Hiciste un nuevo record';
     } else {
-      pResult.innerHTML = 'no hay record'
+      pResult.innerHTML = 'No superaste el record'
     }
   } else {
     localStorage.setItem('record_time', playerTime);
-    pResult.innerHTML = 'new record first time'
+    pResult.innerHTML = 'Hiciste un nuevo record';
   }
-  reset.style.display = 'flex';
-  reset.addEventListener('click', reloadGame);
+
 }
 
 function showLives() {
